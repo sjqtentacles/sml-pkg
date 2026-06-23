@@ -1,0 +1,5 @@
+package github.com/sjqtentacles/sml-pkg
+
+require {
+  github.com/sjqtentacles/sml-cli
+}

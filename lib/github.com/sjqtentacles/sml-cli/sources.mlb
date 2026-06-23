@@ -1,0 +1,6 @@
+(* Source files for sml-cli, in dependency order. *)
+
+$(SML_LIB)/basis/basis.mlb
+
+cli.sig
+cli.sml

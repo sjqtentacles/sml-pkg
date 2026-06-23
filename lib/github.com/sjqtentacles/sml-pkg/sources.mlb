@@ -1,0 +1,6 @@
+(* Source files for the sml-pkg library, in dependency order. *)
+
+$(SML_LIB)/basis/basis.mlb
+
+pkg.sig
+pkg.sml

@@ -1,0 +1,11 @@
+(* MLB for the impure sml-pkg CLI: the basis, the vendored sml-cli parser,
+ * the pure sml-pkg core, then the impure driver and command dispatcher.
+ * This binary is a TOOL -- it is not part of the byte-identical guarantee. *)
+$(SML_LIB)/basis/basis.mlb
+
+../lib/github.com/sjqtentacles/sml-cli/sources.mlb
+../lib/github.com/sjqtentacles/sml-pkg/sources.mlb
+
+driver.sig
+driver.sml
+pkg.sml

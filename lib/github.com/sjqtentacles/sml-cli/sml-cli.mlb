@@ -1,0 +1,6 @@
+(* sml-cli: public library basis. Re-exports the Cli structure, a
+   declarative, dependency-free command-line argument parser. *)
+
+$(SML_LIB)/basis/basis.mlb
+
+sources.mlb
