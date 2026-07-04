@@ -53,7 +53,10 @@ sig
   (* `flag long short help`: a boolean flag, default false, repeatable-safe. *)
   val flag : string -> char option -> string -> spec -> spec
 
-  (* `intOpt long short {required, default} help`: an option taking an int. *)
+  (* `intOpt long short {required, default} help`: an option taking an int.
+     The value must parse within the signed 32-bit range; a non-numeric or
+     oversized value is a parse error ("expects an integer"), never an
+     overflow of the default `int`. *)
   val intOpt :
     string -> char option -> {required : bool, default : int option}
     -> string -> spec -> spec

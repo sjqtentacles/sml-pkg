@@ -219,8 +219,21 @@ struct
                             then Err ("missing required option --" ^ #long a)
                             else Ok NONE
                         | SOME raw =>
-                            (case Int.fromString raw of
-                                 SOME n => Ok (SOME (#long a, VInt n))
+                            (* Bound the value to the signed 32-bit range.
+                               `Int.fromString` RAISES Overflow past 2^31 on a
+                               32-bit `int` (MLton) yet accepts far larger
+                               values on a 63-bit `int` (Poly/ML): an untrusted
+                               oversized value would crash one compiler and
+                               diverge on the other. Going through IntInf makes
+                               the parse total; out-of-range takes the same
+                               "expects an integer" error path. *)
+                            (case IntInf.fromString raw of
+                                 SOME n =>
+                                   if n >= ~2147483648 andalso n <= 2147483647
+                                   then Ok (SOME (#long a, VInt (IntInf.toInt n)))
+                                   else Err ("option --" ^ #long a
+                                             ^ " expects an integer, got \""
+                                             ^ raw ^ "\"")
                                | NONE =>
                                    Err ("option --" ^ #long a
                                         ^ " expects an integer, got \""
