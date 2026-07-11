@@ -21,7 +21,7 @@ CLI_MLB    := cli/pkg.mlb
 SRCS       := $(wildcard $(LIBDIR)/*.sml $(LIBDIR)/*.sig) $(wildcard test/*.sml) $(TEST_MLB) $(LIBDIR)/sources.mlb
 DRIVER_SRCS := $(wildcard $(LIBDIR)/* $(CLIDIR)/* cli/*) $(CLI_MLB)
 
-.PHONY: all test poly test-poly all-tests example driver smoke clean
+.PHONY: all test poly test-poly verify-identical all-tests example driver smoke clean
 
 all: $(BIN)/test-mlton
 
@@ -39,7 +39,7 @@ $(BIN)/test-poly: $(SRCS) tools/polybuild | $(BIN)
 test-poly: $(BIN)/test-poly
 	$(BIN)/test-poly
 
-all-tests: test test-poly
+all-tests: test test-poly verify-identical
 
 example: $(BIN)/demo
 	./$(BIN)/demo
@@ -60,3 +60,11 @@ $(BIN):
 
 clean:
 	rm -rf $(BIN)
+
+# The dual-compiler contract: both suites must print byte-identical output.
+# Recursive make -s captures the raw suite stdout regardless of poly strategy.
+verify-identical:
+	$(MAKE) -s test > $(BIN)/out-mlton.txt
+	$(MAKE) -s test-poly > $(BIN)/out-poly.txt
+	diff $(BIN)/out-mlton.txt $(BIN)/out-poly.txt
+	@echo "byte-identical: OK"
