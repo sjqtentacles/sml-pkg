@@ -21,7 +21,7 @@ CLI_MLB    := cli/pkg.mlb
 SRCS       := $(wildcard $(LIBDIR)/*.sml $(LIBDIR)/*.sig) $(wildcard test/*.sml) $(TEST_MLB) $(LIBDIR)/sources.mlb
 DRIVER_SRCS := $(wildcard $(LIBDIR)/* $(CLIDIR)/* cli/*) $(CLI_MLB)
 
-.PHONY: all test poly test-poly verify-identical all-tests example driver smoke clean
+.PHONY: all test poly test-poly verify-identical all-tests example driver smoke clean example-poly
 
 all: $(BIN)/test-mlton
 
@@ -40,6 +40,10 @@ test-poly: $(BIN)/test-poly
 	$(BIN)/test-poly
 
 all-tests: test test-poly verify-identical
+
+# Demos are top-level scripts; run them under Poly/ML via use-loading.
+example-poly:
+	sh tools/polybuild -r examples/sources.mlb
 
 example: $(BIN)/demo
 	./$(BIN)/demo
